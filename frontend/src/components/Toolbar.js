@@ -2,7 +2,7 @@ import { useState } from 'react';
 import { DraggableNode } from './DraggableNode';
 import { 
   Download, Upload, Sparkles, Type, Calculator, 
-  Globe, GitBranch, Database, Shuffle, Search,
+  Globe, GitBranch, Clock, Shuffle, Search,
   ChevronDown, ChevronRight, Workflow
 } from 'lucide-react';
 
@@ -37,7 +37,7 @@ const nodeCategories = [
     icon: Globe,
     nodes: [
       { type: 'api', label: 'API', icon: Globe, description: 'HTTP requests' },
-      { type: 'database', label: 'Database', icon: Database, description: 'Database queries' },
+      { type: 'timer', label: 'Timer', icon: Clock, description: 'Delay/scheduling' },
     ]
   }
 ];

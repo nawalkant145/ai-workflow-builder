@@ -1000,3 +1000,34 @@ body {
 .text-secondary { color: var(--text-secondary); }
 .text-accent { color: var(--accent-primary); }
 .font-mono { font-family: var(--font-mono); }
+
+/* --- Custom Edge Styling --- */
+.edge-button-container {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  z-index: 1000;
+}
+
+.edge-delete-button {
+  background: var(--bg-elevated);
+  border: 1px solid var(--border-default);
+  color: var(--text-secondary);
+  border-radius: 50%;
+  width: 24px;
+  height: 24px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  transition: all var(--transition-fast);
+  opacity: 0.7;
+}
+
+.edge-delete-button:hover {
+  background: rgba(239, 68, 68, 0.15);
+  border-color: #ef4444;
+  color: #ef4444;
+  opacity: 1;
+  transform: scale(1.1);
+}

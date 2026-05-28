@@ -9,6 +9,12 @@ import { InputNode } from './nodes/inputNode';
 import { LLMNode } from './nodes/llmNode';
 import { OutputNode } from './nodes/outputNode';
 import { TextNode } from './nodes/textNode';
+import { MathNode } from './nodes/MathNode';
+import { TimerNode } from './nodes/TimerNode';
+import { APINode } from './nodes/APINode';
+import { ConditionalNode } from './nodes/ConditionalNode';
+import { DataTransformNode } from './nodes/DataTransformNode';
+import { CustomEdge } from './components/CustomEdge';
 
 import 'reactflow/dist/style.css';
 
@@ -20,6 +26,15 @@ const nodeTypes = {
   llm: LLMNode,
   customOutput: OutputNode,
   text: TextNode,
+  math: MathNode,
+  timer: TimerNode,
+  api: APINode,
+  conditional: ConditionalNode,
+  dataTransform: DataTransformNode,
+};
+
+const edgeTypes = {
+  customEdge: CustomEdge,
 };
 
 const selector = (state) => ({
@@ -120,13 +135,14 @@ export const PipelineUI = () => {
         onDragOver={onDragOver}
         onInit={setReactFlowInstance}
         nodeTypes={nodeTypes}
+        edgeTypes={edgeTypes}
         proOptions={proOptions}
         snapGrid={[gridSize, gridSize]}
         snapToGrid
         connectionLineType="smoothstep"
         connectionLineStyle={{ stroke: '#6366f1', strokeWidth: 2, strokeDasharray: '5 5' }}
         defaultEdgeOptions={{
-          type: 'smoothstep',
+          type: 'customEdge',
           animated: true,
           style: { stroke: '#475569', strokeWidth: 2 },
         }}
