@@ -42,6 +42,13 @@ export const useStore = create((set, get) => ({
     });
   },
 
+  // Remove a specific edge
+  removeEdge: (edgeId) => {
+    set({
+      edges: get().edges.filter((edge) => edge.id !== edgeId),
+    });
+  },
+
   // Apply React Flow node changes (drag, select, etc.)
   onNodesChange: (changes) => {
     set({
@@ -70,7 +77,7 @@ export const useStore = create((set, get) => ({
       edges: addEdge(
         {
           ...connection,
-          type: 'smoothstep',
+          type: 'customEdge',
           animated: true,
           markerEnd: {
             type: MarkerType.Arrow,
@@ -93,6 +100,22 @@ export const useStore = create((set, get) => ({
           return {
             ...node,
             data: { ...node.data, [fieldName]: fieldValue },
+          };
+        }
+        return node;
+      }),
+    });
+  },
+
+  // Update node dimensions
+  updateNodeDimensions: (nodeId, width, height) => {
+    set({
+      nodes: get().nodes.map((node) => {
+        if (node.id === nodeId) {
+          return {
+            ...node,
+            width,
+            height,
           };
         }
         return node;
