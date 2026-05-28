@@ -7,8 +7,7 @@ import { useStore } from '../store';
 
 export const TextNode = ({ id, data, selected }) => {
   const updateNodeField = useStore((state) => state.updateNodeField);
-
-  const [currText, setCurrText] = useState(data?.text || '{{input}}');
+  const removeEdgesByHandle = useStore((state) => state.removeEdgesByHandle);
 
   // Extract {{variables}} from text
   const extractVariables = (text) => {
@@ -21,15 +20,27 @@ export const TextNode = ({ id, data, selected }) => {
     return Array.from(vars);
   };
 
-  const variables = extractVariables(currText);
+  const [currText, setCurrText] = useState(data?.text || '{{input}}');
+  const [variables, setVariables] = useState(extractVariables(data?.text || '{{input}}'));
+
   const dynamicInputs = variables.map((v) => ({
     id: `${id}-${v}`,
     label: v,
   }));
 
   const handleTextChange = (e) => {
-    setCurrText(e.target.value);
-    updateNodeField(id, 'text', e.target.value);
+    const newText = e.target.value;
+    setCurrText(newText);
+    updateNodeField(id, 'text', newText);
+    
+    // Check for removed variables to clean up orphan edges
+    const newVariables = extractVariables(newText);
+    const removedVariables = variables.filter(v => !newVariables.includes(v));
+    removedVariables.forEach(v => {
+      removeEdgesByHandle(id, `${id}-${v}`);
+    });
+    setVariables(newVariables);
+
     // Auto-resize
     e.target.style.height = 'auto';
     e.target.style.height = e.target.scrollHeight + 'px';
