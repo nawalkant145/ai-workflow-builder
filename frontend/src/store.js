@@ -146,6 +146,13 @@ export const useStore = create((set, get) => ({
     set({ nodes: [], edges: [], nodeIDs: {} });
   },
 
+  // Modal State
+  isModalOpen: false,
+  modalData: null,
+
+  openModal: (data) => set({ isModalOpen: true, modalData: data }),
+  closeModal: () => set({ isModalOpen: false, modalData: null }),
+
   // Serialize pipeline data for API submission
   getPipelineData: () => {
     const { nodes, edges } = get();

@@ -5,8 +5,8 @@ import { shallow } from 'zustand/shallow';
 
 export const SubmitButton = () => {
   const [isLoading, setIsLoading] = useState(false);
-  const { nodes, edges } = useStore(
-    (state) => ({ nodes: state.nodes, edges: state.edges }),
+  const { nodes, edges, openModal } = useStore(
+    (state) => ({ nodes: state.nodes, edges: state.edges, openModal: state.openModal }),
     shallow
   );
 
@@ -38,9 +38,7 @@ export const SubmitButton = () => {
       }
 
       const result = await response.json();
-      alert(
-        `Pipeline Analysis:\n\nNodes: ${result.num_nodes}\nEdges: ${result.num_edges}\nIs DAG: ${result.is_dag}`
-      );
+      openModal(result);
     } catch (error) {
       alert(`Error analyzing pipeline: ${error.message}`);
     } finally {
