@@ -1,70 +1,62 @@
-# Getting Started with Create React App
+# VectorShift AI Workflow Builder
 
-This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).
+A premium, node-based visual workflow builder for AI pipelines. Built with React Flow, Zustand, FastAPI, and tailored with a modern, glassmorphic design system.
 
-## Available Scripts
+## 🚀 Features
 
-In the project directory, you can run:
+- **Premium UI/UX**: Dark mode by default, glassmorphic modals, and custom-styled interactive edges with animated gradients.
+- **9 Custom Nodes**:
+  - `InputNode` / `OutputNode`: Define pipeline boundaries.
+  - `LLMNode`: Select from multiple AI models (GPT-4, Claude, LLaMA) and adjust temperature via a responsive slider.
+  - `TextNode`: Advanced regex parsing automatically detects `{{variables}}` and instantly creates semantic dynamic input handles.
+  - `MathNode`: Perform operations on data streams.
+  - `ConditionalNode`: Logic branching for dynamic workflows.
+  - `DataTransformNode`: Format and process data.
+  - `APINode`: Send HTTP requests directly from the pipeline.
+  - `TimerNode`: Pause execution visually.
+- **Robust State Management**: Powered by Zustand. Features edge deduplication, orphan edge cleanup, and automatic canvas dimension resizing.
+- **DAG Validation**: FastAPI backend algorithm uses Kahn's topological sort to parse the pipeline and detect cyclic dependencies in real-time.
 
-### `npm start`
+## 🛠 Tech Stack
 
-Runs the app in the development mode.\
-Open [http://localhost:3000](http://localhost:3000) to view it in your browser.
+- **Frontend**: React, React Flow, Zustand, Lucide React (Icons).
+- **Backend**: Python, FastAPI, Pydantic, Uvicorn.
+- **Styling**: Vanilla CSS with comprehensive CSS variable tokens for rapid theming.
 
-The page will reload when you make changes.\
-You may also see any lint errors in the console.
+## 📦 Local Setup
 
-### `npm test`
+### 1. Frontend
+```bash
+cd frontend
+npm install
+npm start
+```
+The app will be running at `http://localhost:3000`.
 
-Launches the test runner in the interactive watch mode.\
-See the section about [running tests](https://facebook.github.io/create-react-app/docs/running-tests) for more information.
+### 2. Backend
+```bash
+cd backend
+python -m venv venv
+# Windows: .\venv\Scripts\activate
+# Mac/Linux: source venv/bin/activate
+pip install -r requirements.txt
+uvicorn main:app --reload --port 8000
+```
+The API will be available at `http://localhost:8000`.
 
-### `npm run build`
+## 🧠 Architecture Overview
 
-Builds the app for production to the `build` folder.\
-It correctly bundles React in production mode and optimizes the build for the best performance.
+The app splits the logic cleanly into two domains:
 
-The build is minified and the filenames include the hashes.\
-Your app is ready to be deployed!
+1. **Client-Side (React + Zustand)**
+   - The UI orchestrates drag-and-drop interactions.
+   - The `store.js` encapsulates all mutation logic (e.g. `onConnect`, `removeNode`, `removeEdge`).
+   - `BaseNode` provides a unified UI wrapper ensuring consistent padding, typography, and hover states across all custom nodes.
 
-See the section about [deployment](https://facebook.github.io/create-react-app/docs/deployment) for more information.
+2. **Server-Side (FastAPI)**
+   - The `/pipelines/parse` endpoint receives the serialized DAG.
+   - It performs a topological sort on the adjacency list.
+   - If it processes all nodes without getting stuck, the pipeline is a valid Directed Acyclic Graph (`is_dag = true`), otherwise it flags it as cyclic.
 
-### `npm run eject`
-
-**Note: this is a one-way operation. Once you `eject`, you can't go back!**
-
-If you aren't satisfied with the build tool and configuration choices, you can `eject` at any time. This command will remove the single build dependency from your project.
-
-Instead, it will copy all the configuration files and the transitive dependencies (webpack, Babel, ESLint, etc) right into your project so you have full control over them. All of the commands except `eject` will still work, but they will point to the copied scripts so you can tweak them. At this point you're on your own.
-
-You don't have to ever use `eject`. The curated feature set is suitable for small and middle deployments, and you shouldn't feel obligated to use this feature. However we understand that this tool wouldn't be useful if you couldn't customize it when you are ready for it.
-
-## Learn More
-
-You can learn more in the [Create React App documentation](https://facebook.github.io/create-react-app/docs/getting-started).
-
-To learn React, check out the [React documentation](https://reactjs.org/).
-
-### Code Splitting
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/code-splitting](https://facebook.github.io/create-react-app/docs/code-splitting)
-
-### Analyzing the Bundle Size
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/analyzing-the-bundle-size](https://facebook.github.io/create-react-app/docs/analyzing-the-bundle-size)
-
-### Making a Progressive Web App
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/making-a-progressive-web-app](https://facebook.github.io/create-react-app/docs/making-a-progressive-web-app)
-
-### Advanced Configuration
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/advanced-configuration](https://facebook.github.io/create-react-app/docs/advanced-configuration)
-
-### Deployment
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/deployment](https://facebook.github.io/create-react-app/docs/deployment)
-
-### `npm run build` fails to minify
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/troubleshooting#npm-run-build-fails-to-minify](https://facebook.github.io/create-react-app/docs/troubleshooting#npm-run-build-fails-to-minify)
+## 🎨 Design Philosophy
+Every element was designed to "wow" the user. No standard browser defaults were used. The canvas utilizes a sleek dot grid, connections snap seamlessly using smoothstep paths, and the floating sidebar organizes nodes into logical categories with collapsible accordions.
